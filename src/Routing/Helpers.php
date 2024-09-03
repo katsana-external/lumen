@@ -17,7 +17,7 @@ trait Helpers
      *
      * @return string
      */
-    protected function getVersionedResourceClassName(string $group, string $name)
+    protected function getVersionedResourceClassName(string $group, string $name) :string
     {
         $class = \str_replace('.', '\\', $name);
         $version = $this->getVersionNamespace();
