@@ -83,7 +83,8 @@ class ConsoleServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerCommands(\array_merge(
-            $this->commands, $this->devCommands
+            $this->commands,
+            $this->devCommands
         ));
     }
 
@@ -158,8 +159,8 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     protected function registerMigrateCommand()
     {
-        $this->app->singleton('command.migrate', static function (Container $app) {
-            return new MigrateCommand($app['migrator']);
+        $this->app->singleton('command.migrate', function (Container $app) {
+            return new MigrateCommand($app['migrator'], $app['events']);
         });
     }
 
@@ -187,7 +188,8 @@ class ConsoleServiceProvider extends ServiceProvider
             // and inject the creator. The creator is responsible for the actual file
             // creation of the migrations, and may be extended by these developers.
             return new MigrateMakeCommand(
-                $app['migration.creator'], $app['composer']
+                $app['migration.creator'],
+                $app['composer']
             );
         });
     }
@@ -424,7 +426,8 @@ class ConsoleServiceProvider extends ServiceProvider
     public function provides()
     {
         return \array_merge(
-            \array_values($this->commands), \array_values($this->devCommands)
+            \array_values($this->commands),
+            \array_values($this->devCommands)
         );
     }
 }
