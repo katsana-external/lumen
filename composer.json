@@ -1,7 +1,13 @@
 {
     "name": "orchestra/lumen",
     "description": "Lumen Framework for Orchestra Platform",
-    "keywords": ["framework", "laravel", "lumen", "orchestral", "orchestra-platform"],
+    "keywords": [
+        "framework",
+        "laravel",
+        "lumen",
+        "orchestral",
+        "orchestra-platform"
+    ],
     "license": "MIT",
     "support": {
         "issues": "https://github.com/orchestral/lumen/issues",
@@ -26,10 +32,10 @@
         ]
     },
     "require": {
-        "php": ">=7.2.5",
-        "laravie/api": "^4.0",
+        "php": "^8.0",
+        "laravie/api": "5.x-dev",
         "nikic/fast-route": "^1.3",
-        "orchestra/foundation": "^5.0"
+        "orchestra/foundation": "7.x-dev"
     },
     "require-dev": {
         "mockery/mockery": "^1.3.1",
@@ -43,11 +49,73 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "5.0-dev"
+            "dev-master": "7.0-dev"
         }
     },
     "config": {
         "sort-packages": true
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/katsana-external/foundation"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/katsana-external/asset"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/katsana-external/auth"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/katsana-external/contracts"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/katsana-external/extension"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/katsana-external/html"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/katsana-external/kernel"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/katsana-external/model"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/katsana-external/translation"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/katsana-external/widget"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/katsana-external/memory"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/katsana-external/support"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/katsana-external/dhosa"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/katsana-external/query-filter"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/katsana-external/blueprint"
+        }
+    ]
 }
