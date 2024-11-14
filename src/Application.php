@@ -2,16 +2,14 @@
 
 namespace Laravel\Lumen;
 
-use Closure;
 use Illuminate\Container\Container;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Lumen\Routing\Router;
+use Laravie\Dhosa\HotSwap;
 use Orchestra\Contracts\Foundation\Application as ApplicationContract;
-use Orchestra\Model\HS;
-use RuntimeException;
 
 class Application extends Container implements ApplicationContract
 {
@@ -108,7 +106,7 @@ class Application extends Container implements ApplicationContract
     /**
      * Create a new Lumen application instance.
      *
-     * @param  string|null  $basePath
+     * @param string|null $basePath
      */
     public function __construct($basePath = null)
     {
@@ -180,8 +178,6 @@ class Application extends Container implements ApplicationContract
     /**
      * Get or check the current application environment.
      *
-     * @param  mixed
-     *
      * @return string
      */
     public function environment(...$environments)
@@ -206,8 +202,6 @@ class Application extends Container implements ApplicationContract
     /**
      * Determine if the given service provider is loaded.
      *
-     * @param  string  $provider
-     *
      * @return bool
      */
     public function providerIsLoaded(string $provider)
@@ -218,9 +212,9 @@ class Application extends Container implements ApplicationContract
     /**
      * Register a service provider with the application.
      *
-     * @param  \Illuminate\Support\ServiceProvider|string  $provider
-     * @param  array  $options
-     * @param  bool   $force
+     * @param \Illuminate\Support\ServiceProvider|string $provider
+     * @param array                                      $options
+     * @param bool                                       $force
      *
      * @return void
      */
@@ -248,8 +242,8 @@ class Application extends Container implements ApplicationContract
     /**
      * Register a deferred provider and service.
      *
-     * @param  string  $provider
-     * @param  string|null  $service
+     * @param string      $provider
+     * @param string|null $service
      *
      * @return void
      */
@@ -283,10 +277,6 @@ class Application extends Container implements ApplicationContract
 
     /**
      * Boot the given service provider.
-     *
-     * @param  \Illuminate\Support\ServiceProvider  $provider
-     *
-     * @return mixed
      */
     protected function bootProvider(ServiceProvider $provider)
     {
@@ -298,7 +288,7 @@ class Application extends Container implements ApplicationContract
     /**
      * Resolve a service provider instance from the class name.
      *
-     * @param  string  $provider
+     * @param string $provider
      *
      * @return \Illuminate\Support\ServiceProvider
      */
@@ -310,8 +300,6 @@ class Application extends Container implements ApplicationContract
     /**
      * Register a new boot listener.
      *
-     * @param  mixed  $callback
-     *
      * @return void
      */
     public function booting($callback)
@@ -321,8 +309,6 @@ class Application extends Container implements ApplicationContract
 
     /**
      * Register a new "booted" listener.
-     *
-     * @param  mixed  $callback
      *
      * @return void
      */
@@ -338,18 +324,15 @@ class Application extends Container implements ApplicationContract
     /**
      * Resolve the given type from the container.
      *
-     * @param  string  $abstract
-     * @param  array  $parameters
-     *
-     * @return mixed
+     * @param string $abstract
      */
     public function make($abstract, array $parameters = [])
     {
         $abstract = $this->getAlias($abstract);
 
-        if (! $this->bound($abstract) &&
-            \array_key_exists($abstract, $this->availableBindings) &&
-            ! \array_key_exists($this->availableBindings[$abstract], $this->ranServiceBinders)) {
+        if (! $this->bound($abstract)
+            && \array_key_exists($abstract, $this->availableBindings)
+            && ! \array_key_exists($this->availableBindings[$abstract], $this->ranServiceBinders)) {
             $this->{$method = $this->availableBindings[$abstract]}();
 
             $this->ranServiceBinders[$method] = true;
@@ -366,8 +349,8 @@ class Application extends Container implements ApplicationContract
     public function flush()
     {
         parent::flush();
+        HotSwap::flush();
 
-        HS::flush();
 
         $this->middleware = [];
         $this->currentRoute = [];
@@ -391,8 +374,6 @@ class Application extends Container implements ApplicationContract
     /**
      * Call the booting callbacks for the application.
      *
-     * @param  array  $callbacks
-     *
      * @return void
      */
     protected function fireAppCallbacks(array $callbacks)
@@ -415,11 +396,9 @@ class Application extends Container implements ApplicationContract
     /**
      * Configure and load the given component and provider.
      *
-     * @param  string  $config
-     * @param  array|string  $providers
-     * @param  string|null  $return
-     *
-     * @return mixed
+     * @param string       $config
+     * @param array|string $providers
+     * @param string|null  $return
      */
     public function loadComponent($config, $providers, $return = null)
     {
@@ -435,7 +414,7 @@ class Application extends Container implements ApplicationContract
     /**
      * Load a configuration file into the application.
      *
-     * @param  string  $name
+     * @param string $name
      *
      * @return void
      */
@@ -461,7 +440,7 @@ class Application extends Container implements ApplicationContract
     /**
      * Get the registered service provider instances if any exist.
      *
-     * @param  \Illuminate\Support\ServiceProvider|string  $provider
+     * @param \Illuminate\Support\ServiceProvider|string $provider
      *
      * @return array
      */
@@ -477,8 +456,8 @@ class Application extends Container implements ApplicationContract
     /**
      * Register the facades for the application.
      *
-     * @param  bool  $aliases
-     * @param  array  $userAliases
+     * @param bool  $aliases
+     * @param array $userAliases
      *
      * @return void
      */
@@ -496,7 +475,7 @@ class Application extends Container implements ApplicationContract
     /**
      * Register the aliases for the application.
      *
-     * @param  array  $custom
+     * @param array $custom
      *
      * @return void
      */
@@ -549,26 +528,26 @@ class Application extends Container implements ApplicationContract
      */
     public function path()
     {
-        return $this->basePath.DIRECTORY_SEPARATOR.'lumen'.DIRECTORY_SEPARATOR.'app';
+        return $this->basePath . DIRECTORY_SEPARATOR . 'lumen' . DIRECTORY_SEPARATOR . 'app';
     }
 
     /**
      * Get the base path for the application.
      *
-     * @param  string|null  $path
+     * @param string|null $path
      *
      * @return string
      */
     public function basePath($path = null)
     {
         if (isset($this->basePath)) {
-            return $this->basePath.($path ? '/'.$path : $path);
+            return $this->basePath . ($path ? '/' . $path : $path);
         }
 
         if ($this->runningInConsole() && ! $this->runningUnitTests()) {
             $this->basePath = \getcwd();
         } else {
-            $this->basePath = \realpath(\getcwd().'/../');
+            $this->basePath = \realpath(\getcwd() . '/../');
         }
 
         return $this->basePath($path);
@@ -577,7 +556,7 @@ class Application extends Container implements ApplicationContract
     /**
      * Get the path to the application configuration files.
      *
-     * @param  string  $path
+     * @param string $path
      *
      * @return string
      */
@@ -595,35 +574,35 @@ class Application extends Container implements ApplicationContract
     /**
      * Get the path to the database directory.
      *
-     * @param  string  $path
+     * @param string $path
      *
      * @return string
      */
     public function databasePath($path = '')
     {
-        return $this->basePath('database').($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return $this->basePath('database') . ($path ? DIRECTORY_SEPARATOR . $path : $path);
     }
 
     /**
      * Get the resource path for the application.
      *
-     * @param  string|null  $path
+     * @param string|null $path
      *
      * @return string
      */
     public function resourcePath($path = '')
     {
         if ($this->resourcePath) {
-            return $this->resourcePath.($path ? '/'.$path : $path);
+            return $this->resourcePath . ($path ? '/' . $path : $path);
         }
 
-        return $this->basePath('resources'.($path ? '/'.$path : $path));
+        return $this->basePath('resources' . ($path ? '/' . $path : $path));
     }
 
     /**
      * Set the storage directory.
      *
-     * @param  string  $path
+     * @param string $path
      *
      * @return $this
      */
@@ -639,17 +618,17 @@ class Application extends Container implements ApplicationContract
     /**
      * Get the storage path for the application.
      *
-     * @param  string|null  $path
+     * @param string|null $path
      *
      * @return string
      */
     public function storagePath($path = '')
     {
         if ($this->storagePath) {
-            return $this->storagePath.($path ? '/'.$path : $path);
+            return $this->storagePath . ($path ? '/' . $path : $path);
         }
 
-        return $this->basePath('storage'.($path ? '/'.$path : $path));
+        return $this->basePath('storage' . ($path ? '/' . $path : $path));
     }
 
     /**
@@ -675,7 +654,7 @@ class Application extends Container implements ApplicationContract
     /**
      * Prepare the application to execute a console command.
      *
-     * @param  bool  $aliases
+     * @param bool $aliases
      *
      * @return void
      */
@@ -709,23 +688,23 @@ class Application extends Container implements ApplicationContract
 
         foreach ((array) ($composer['autoload']['psr-4'] ?? []) as $namespace => $path) {
             foreach ((array) $path as $pathChoice) {
-                if (\realpath($this->path()) == \realpath($this->basePath().'/'.$pathChoice)) {
+                if (\realpath($this->path()) == \realpath($this->basePath() . '/' . $pathChoice)) {
                     return $this->namespace = $namespace;
                 }
             }
         }
 
-        throw new RuntimeException('Unable to detect application namespace.');
+        throw new \RuntimeException('Unable to detect application namespace.');
     }
 
     /**
      * Register a terminating callback with the application.
      *
-     * @param  \Closure  $callback
+     * @param \Closure $callback
      *
      * @return $this
      */
-    public function terminating(Closure $callback)
+    public function terminating($callback)
     {
         $this->terminatingCallbacks[] = $callback;
 
@@ -757,7 +736,7 @@ class Application extends Container implements ApplicationContract
     /**
      * Set the current application locale.
      *
-     * @param  string  $locale
+     * @param string $locale
      *
      * @return void
      */
@@ -770,7 +749,7 @@ class Application extends Container implements ApplicationContract
     /**
      * Determine if application locale is the given locale.
      *
-     * @param  string  $locale
+     * @param string $locale
      *
      * @return bool
      */
@@ -783,10 +762,6 @@ class Application extends Container implements ApplicationContract
      * Get the paths to the given configuration file.
      *
      * If no name is provided, then we'll return the path to the config folder.
-     *
-     * @param  string  $name
-     *
-     * @return array
      */
     protected function getConfigurationPaths(string $name): array
     {
@@ -801,5 +776,15 @@ class Application extends Container implements ApplicationContract
         }
 
         return \array_filter($paths);
+    }
+
+    /**
+     * Get the current maintenance mode manager instance.
+     *
+     * @return \Illuminate\Contracts\Foundation\MaintenanceMode
+     */
+    public function maintenanceMode()
+    {
+        return $this->make('maintenance.mode');
     }
 }
