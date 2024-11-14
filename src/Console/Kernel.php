@@ -83,7 +83,12 @@ class Kernel implements KernelContract
         }
 
         $app->instance('request', Request::create(
-            $uri, 'GET', [], [], [], $server
+            $uri,
+            'GET',
+            [],
+            [],
+            [],
+            $server
         ));
     }
 
@@ -95,7 +100,8 @@ class Kernel implements KernelContract
     protected function defineConsoleSchedule()
     {
         $this->app->instance(
-            Schedule::class, $schedule = new Schedule()
+            Schedule::class,
+            $schedule = new Schedule()
         );
 
         $this->schedule($schedule);
@@ -259,5 +265,25 @@ class Kernel implements KernelContract
         } else {
             return $this->app->make(Handler::class);
         }
+    }
+
+    /**
+     * Get the bootstrap classes for the application.
+     *
+     * @return array
+     */
+    protected function bootstrappers()
+    {
+        return [];
+    }
+
+    /**
+     * Bootstrap the application for artisan commands.
+     *
+     * @return void
+     */
+    public function bootstrap()
+    {
+        $this->app->bootstrapWith($this->bootstrappers());
     }
 }
