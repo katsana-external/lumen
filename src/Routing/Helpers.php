@@ -17,7 +17,7 @@ trait Helpers
      *
      * @return string
      */
-    protected function getVersionedResourceClassName($group, $name)
+    protected function getVersionedResourceClassName($group, $name): string
     {
         $class = \str_replace('.', '\\', $name);
         $version = $this->getVersionNamespace();
@@ -30,7 +30,7 @@ trait Helpers
      *
      * @return string
      */
-    protected function getVersionNamespace()
+    protected function getVersionNamespace(): mixed
     {
         $version = \app('request')->version() ?? 'v1';
         $supported = $this->getSupportedVersionNamespace();
