@@ -787,4 +787,14 @@ class Application extends Container implements ApplicationContract
     {
         return $this->make('maintenance.mode');
     }
+
+    /**
+     * Get the fallback locale.
+     *
+     * @return string
+     */
+    public function getFallbackLocale()
+    {
+        return 'en';
+    }
 }

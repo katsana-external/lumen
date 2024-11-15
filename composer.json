@@ -107,11 +107,11 @@
         },
         {
             "type": "vcs",
-            "url": "https://github.com/katsana-external/dhosa"
+            "url": "https://github.com/katsana-external/notifier"
         },
         {
             "type": "vcs",
-            "url": "https://github.com/katsana-external/query-filter"
+            "url": "https://github.com/katsana-external/dhosa"
         },
         {
             "type": "vcs",

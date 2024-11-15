@@ -75,10 +75,11 @@ class Request extends BaseRequest
      *
      * @return bool
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return Arr::has(
-            $this->all() + $this->route()[2], $offset
+            $this->all() + $this->route()[2],
+            $offset
         );
     }
 }
