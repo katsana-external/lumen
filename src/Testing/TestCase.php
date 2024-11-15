@@ -24,6 +24,16 @@ abstract class TestCase extends BaseTestCase
     protected $baseUrl = 'http://localhost';
 
     /**
+     * @var array
+     */
+    protected $dispatchedJobs = [];
+
+    /**
+     * @var int
+     */
+    protected $code = 0;
+
+    /**
      * Creates the application.
      *
      * Needs to be implemented by subclasses.
