@@ -34,6 +34,11 @@ abstract class TestCase extends BaseTestCase
     protected $code = 0;
 
     /**
+     * @var string|null
+     */
+    protected $currentUri;
+
+    /**
      * Creates the application.
      *
      * Needs to be implemented by subclasses.
@@ -106,7 +111,9 @@ abstract class TestCase extends BaseTestCase
         $count = $this->app->make('db')->connection($onConnection)->table($table)->where($data)->count();
 
         $this->assertGreaterThan(0, $count, \sprintf(
-            'Unable to find row in database table [%s] that matched attributes [%s].', $table, \json_encode($data)
+            'Unable to find row in database table [%s] that matched attributes [%s].',
+            $table,
+            \json_encode($data)
         ));
 
         return $this;
@@ -140,7 +147,9 @@ abstract class TestCase extends BaseTestCase
         $count = $this->app->make('db')->connection($onConnection)->table($table)->where($data)->count();
 
         $this->assertEquals(0, $count, \sprintf(
-            'Found unexpected records in database table [%s] that matched attributes [%s].', $table, \json_encode($data)
+            'Found unexpected records in database table [%s] that matched attributes [%s].',
+            $table,
+            \json_encode($data)
         ));
 
         return $this;
@@ -219,7 +228,8 @@ abstract class TestCase extends BaseTestCase
         }
 
         $this->app->instance(
-            \Illuminate\Contracts\Bus\Dispatcher::class, $mock
+            \Illuminate\Contracts\Bus\Dispatcher::class,
+            $mock
         );
 
         return $this;
@@ -239,7 +249,8 @@ abstract class TestCase extends BaseTestCase
         });
 
         $this->app->instance(
-            \Illuminate\Contracts\Bus\Dispatcher::class, $mock
+            \Illuminate\Contracts\Bus\Dispatcher::class,
+            $mock
         );
 
         return $this;

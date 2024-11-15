@@ -22,7 +22,7 @@ trait MakesHttpRequests
     /**
      * The current URI being viewed.
      *
-     * @var string
+     * @var string|null
      */
     protected $currentUri;
 
@@ -47,7 +47,13 @@ trait MakesHttpRequests
         ], $headers);
 
         $this->call(
-            $method, $uri, [], [], [], $this->transformHeadersToServerVars($headers), $content
+            $method,
+            $uri,
+            [],
+            [],
+            [],
+            $this->transformHeadersToServerVars($headers),
+            $content
         );
 
         return $this;
@@ -370,8 +376,13 @@ trait MakesHttpRequests
         $this->currentUri = $this->prepareUrlForRequest($uri);
 
         $symfonyRequest = SymfonyRequest::create(
-            $this->currentUri, $method, $parameters,
-            $cookies, $files, $server, $content
+            $this->currentUri,
+            $method,
+            $parameters,
+            $cookies,
+            $files,
+            $server,
+            $content
         );
 
         $this->app['request'] = LumenRequest::createFromBase($symfonyRequest);
@@ -384,21 +395,23 @@ trait MakesHttpRequests
     /**
      * Turn the given URI into a fully qualified URL.
      *
-     * @param  string  $uri
+     * @param string|null $uri
      *
      * @return string
      */
     protected function prepareUrlForRequest($uri)
     {
+        $uri = (string) $uri;
+
         if (Str::startsWith($uri, '/')) {
-            $uri = \substr($uri, 1);
+            $uri = substr($uri, 1);
         }
 
         if (! Str::startsWith($uri, 'http')) {
-            $uri = $this->baseUrl.'/'.$uri;
+            $uri = $this->baseUrl . '/' . $uri;
         }
 
-        return \trim($uri, '/');
+        return trim($uri, '/');
     }
 
     /**
