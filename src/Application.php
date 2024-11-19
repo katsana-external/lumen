@@ -388,9 +388,9 @@ class Application extends Container implements ApplicationContract
      *
      * @return string
      */
-    protected function getLanguagePath()
+    protected function getLanguagePath($path = '')
     {
-        return $this->resourcePath('lang');
+        return $this->basePath . DIRECTORY_SEPARATOR . 'lang' . ($path ? DIRECTORY_SEPARATOR . $path : $path);
     }
 
     /**
