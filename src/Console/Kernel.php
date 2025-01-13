@@ -266,6 +266,17 @@ class Kernel implements KernelContract
             return $this->app->make(Handler::class);
         }
     }
+    /**
+     * Bootstrap the application for artisan commands.
+     *
+     * @return void
+     */
+    public function bootstrap()
+    {
+        if (! $this->app->hasBeenBootstrapped()) {
+            $this->app->bootstrapWith($this->bootstrappers());
+        }
+    }
 
     /**
      * Get the bootstrap classes for the application.
@@ -275,15 +286,5 @@ class Kernel implements KernelContract
     protected function bootstrappers()
     {
         return [];
-    }
-
-    /**
-     * Bootstrap the application for artisan commands.
-     *
-     * @return void
-     */
-    public function bootstrap()
-    {
-        $this->app->bootstrapWith($this->bootstrappers());
     }
 }

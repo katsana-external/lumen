@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Laravel\Lumen\Routing\Router;
 use Laravie\Dhosa\HotSwap;
 use Orchestra\Contracts\Foundation\Application as ApplicationContract;
+use RuntimeException;
 
 class Application extends Container implements ApplicationContract
 {
@@ -350,7 +351,6 @@ class Application extends Container implements ApplicationContract
     {
         parent::flush();
         HotSwap::flush();
-
 
         $this->middleware = [];
         $this->currentRoute = [];
