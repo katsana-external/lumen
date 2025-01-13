@@ -10,6 +10,7 @@ class MakesHttpRequestsTest extends TestCase
 {
     use MakesHttpRequests;
 
+    protected $app;
     public function testReceiveJson()
     {
         $this->app = new Application;
